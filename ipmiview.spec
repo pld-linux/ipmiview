@@ -36,15 +36,19 @@ done
 
 install *.jar *.jnilib $RPM_BUILD_ROOT%{_libdir}/%{name}
 
-echo "#!/bin/sh
-cd \${TMPDIR:-/tmp}
-exec java -Djava.library.path=%{_libdir}/%{name} -jar %{_libdir}/%{name}/IPMIView20.jar" \
-	> $RPM_BUILD_ROOT%{_bindir}/ipmiview
+cat > $RPM_BUILD_ROOT%{_bindir}/ipmiview << 'EOF'
+#!/bin/sh
+[ ! -d "$HOME/.ipmiview" ] && mkdir -p "$HOME/.ipmiview"
+cd "$HOME/.ipmiview"
+exec java -Djava.library.path=%{_libdir}/%{name} -jar %{_libdir}/%{name}/IPMIView20.jar
+EOF
 
-echo "#!/bin/sh
-cd \${TMPDIR:-/tmp}
-exec java -Djava.library.path=%{_libdir}/%{name} -jar %{_libdir}/%{name}/TrapView.jar" \
-	> $RPM_BUILD_ROOT%{_bindir}/trapview
+cat > $RPM_BUILD_ROOT%{_bindir}/trapview << 'EOF'
+#!/bin/sh
+[ ! -d "$HOME/.ipmiview" ] && mkdir -p "$HOME/.ipmiview"
+cd "$HOME/.ipmiview"
+exec java -Djava.library.path=%{_libdir}/%{name} -jar %{_libdir}/%{name}/TrapView.jar
+EOF
 
 %clean
 rm -rf $RPM_BUILD_ROOT
