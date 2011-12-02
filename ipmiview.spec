@@ -38,15 +38,17 @@ install *.jar *.jnilib $RPM_BUILD_ROOT%{_libdir}/%{name}
 
 cat > $RPM_BUILD_ROOT%{_bindir}/ipmiview << 'EOF'
 #!/bin/sh
-[ ! -d "$HOME/.ipmiview" ] && mkdir -p "$HOME/.ipmiview"
-cd "$HOME/.ipmiview"
+CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/ipmiview"
+[ ! -d "$CONFIG_DIR" ] && mkdir -p "$CONFIG_DIR"
+cd "$CONFIG_DIR"
 exec java -Djava.library.path=%{_libdir}/%{name} -jar %{_libdir}/%{name}/IPMIView20.jar
 EOF
 
 cat > $RPM_BUILD_ROOT%{_bindir}/trapview << 'EOF'
 #!/bin/sh
-[ ! -d "$HOME/.ipmiview" ] && mkdir -p "$HOME/.ipmiview"
-cd "$HOME/.ipmiview"
+CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/ipmiview"
+[ ! -d "$CONFIG_DIR" ] && mkdir -p "$CONFIG_DIR"
+cd "$CONFIG_DIR"
 exec java -Djava.library.path=%{_libdir}/%{name} -jar %{_libdir}/%{name}/TrapView.jar
 EOF
 
